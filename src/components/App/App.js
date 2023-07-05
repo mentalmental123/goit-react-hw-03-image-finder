@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import { pixabay, searchParams } from "../../Api/Pixaby";
-import { RotatingLines } from "react-loader-spinner";
+
 import Loader from "../Loader/Loader";
 
 // import {}

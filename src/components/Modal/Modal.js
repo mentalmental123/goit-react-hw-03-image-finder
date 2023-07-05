@@ -20,7 +20,7 @@ export default class Modal extends Component {
         className={css.Overlay}
       >
         <div className={css.Modal}>
-          <img src={largeImage} />
+          <img src={largeImage} alt="something" />
         </div>
       </div>
     );

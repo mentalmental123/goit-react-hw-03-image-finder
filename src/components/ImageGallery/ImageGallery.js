@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import css from "./imageGallery.module.css";
 import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
-import { toHaveDisplayValue } from "@testing-library/jest-dom/matchers";
+
 import { pixabay, searchParams, PERPAGE } from "../../Api/Pixaby";
 import Loader from "../Loader/Loader";
 import Modal from "../Modal/Modal";
@@ -68,7 +68,10 @@ export default class ImageGallery extends Component {
           className={css.ImageGallery}
         >
           {images.length > 0 ? (
-            <ImageGalleryItem images={this.state.images}></ImageGalleryItem>
+            <ImageGalleryItem
+              key={this.state.images.key}
+              images={this.state.images}
+            ></ImageGalleryItem>
           ) : (
             ""
           )}
