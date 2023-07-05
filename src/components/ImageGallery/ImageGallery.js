@@ -59,6 +59,7 @@ export default class ImageGallery extends Component {
   render() {
     const { images, pictureTreshhold, isLoading, showModal, largeImage } =
       this.state;
+    console.log(images);
     return (
       <>
         <ul
@@ -77,7 +78,7 @@ export default class ImageGallery extends Component {
           )}
         </ul>
         {isLoading && <Loader></Loader>}
-        {PAGE_COUNTER <= pictureTreshhold ? (
+        {PAGE_COUNTER <= pictureTreshhold && images.length >= 12 ? (
           <button onClick={this.onClickGetMoreImages} className={css.Button}>
             LOAD MORE
           </button>

@@ -21,7 +21,6 @@ class Pixabay {
   async getPictures() {
     try {
       const { data } = await axios.get(`?${searchParams}`);
-      console.log(data);
       if (data.totalHits === 0) {
         Notify.failure(
           "Sorry, there are no images matching your search query. Please try again."
