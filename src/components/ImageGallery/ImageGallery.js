@@ -5,6 +5,7 @@ import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
 import { pixabay, searchParams, PERPAGE } from "../../Api/Pixaby";
 import Loader from "../Loader/Loader";
 import Modal from "../Modal/Modal";
+import PropTypes from "prop-types";
 
 let PAGE_COUNTER = 1;
 
@@ -59,7 +60,6 @@ export default class ImageGallery extends Component {
   render() {
     const { images, pictureTreshhold, isLoading, showModal, largeImage } =
       this.state;
-    console.log(images);
     return (
       <>
         <ul
@@ -98,3 +98,7 @@ export default class ImageGallery extends Component {
     );
   }
 }
+
+ImageGallery.propTypes = {
+  data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+};

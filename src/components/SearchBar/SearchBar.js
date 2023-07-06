@@ -1,5 +1,6 @@
 import React from "react";
 import css from "./searchBar.module.css";
+import PropTypes from "prop-types";
 
 export default function SearchBar({ getQueryImages }) {
   return (
@@ -27,3 +28,7 @@ export default function SearchBar({ getQueryImages }) {
     </header>
   );
 }
+
+SearchBar.propTypes = {
+  getQueryImages: PropTypes.func,
+};

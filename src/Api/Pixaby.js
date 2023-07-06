@@ -4,7 +4,7 @@ import { Notify } from "notiflix";
 const APIKEY = "35927356-03cae75c91b8b6400b36c16fd";
 const BASEURL = "https://pixabay.com/api/";
 
-const PERPAGE = 100;
+const PERPAGE = 12;
 
 axios.defaults.baseURL = `${BASEURL}`;
 
