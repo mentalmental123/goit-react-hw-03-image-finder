@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import css from "./imageGallery.module.css";
 import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
 
@@ -9,94 +9,91 @@ import PropTypes from "prop-types";
 
 let PAGE_COUNTER = 1;
 
-export default class ImageGallery extends Component {
-  constructor() {
-    super();
-    this.state = {
-      images: [],
-      pictureTreshhold: 0,
-      isLoading: false,
-      showModal: false,
-      largeImage: "",
-    };
-    this.onClickGetMoreImages = this.onClickGetMoreImages.bind(this);
-    this.onClickCloseModal = this.onClickCloseModal.bind(this);
-    // this.onKeyClose = this.onKeyClose.bind(this);
-  }
+export default function ImageGallery({ data }) {
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     images: [],
+  //     pictureTreshhold: 0,
+  //     isLoading: false,
+  //     showModal: false,
+  //     largeImage: "",
+  //   };
+  // }
+  const [images, setImages] = useState([]);
+  const [pictureTreshhold, setPictureTreshhold] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [largeImage, setLargeImage] = useState("");
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.data !== this.props.data) {
-      const data = this.props.data.hits || [];
-      this.setState({
-        images: data,
-        pictureTreshhold: Math.ceil(this.props.data.totalHits / PERPAGE),
-      });
-    }
-  }
+  // this.onClickGetMoreImages = this.onClickGetMoreImages.bind(this);
+  // this.onClickCloseModal = this.onClickCloseModal.bind(this);
+  // this.onKeyClose = this.onKeyClose.bind(this);
 
-  async onClickGetMoreImages() {
-    this.setState({ isLoading: true });
+  useEffect(() => {
+    const array = data.hits || [];
+    setImages(array);
+    setPictureTreshhold(Math.ceil(data.totalHits / PERPAGE));
+  }, [data]);
+
+  const onClickGetMoreImages = async () => {
+    setIsLoading(true);
     PAGE_COUNTER++;
     searchParams.set("page", PAGE_COUNTER);
     const data = await pixabay.loadMorePictures();
-    this.setState((prevState) => {
-      return { images: prevState.images.concat(data.hits) };
-    });
-    this.setState({ isLoading: false });
-  }
+    setImages(images.concat(data.hits));
+    setIsLoading(false);
+  };
 
-  onClickOpenModal(evt) {
+  const onClickOpenModal = (evt) => {
     if (evt.target.nodeName !== "IMG") {
       return;
     }
     const largerImgLink = evt.target.dataset.source;
-    this.setState({ largeImage: largerImgLink, showModal: true });
-  }
+    setLargeImage(largerImgLink);
+    setShowModal(true);
+    // this.setState({ largeImage: largerImgLink, showModal: true });
+  };
 
-  onClickCloseModal() {
-    this.setState({ showModal: false });
-  }
+  const onClickCloseModal = () => {
+    setShowModal(false);
+  };
 
-  render() {
-    const { images, pictureTreshhold, isLoading, showModal, largeImage } =
-      this.state;
-    return (
-      <>
-        <ul
-          onClick={(evt) => {
-            this.onClickOpenModal(evt);
-          }}
-          className={css.ImageGallery}
-        >
-          {images.length > 0 ? (
-            <ImageGalleryItem
-              key={this.state.images.key}
-              images={this.state.images}
-            ></ImageGalleryItem>
-          ) : (
-            ""
-          )}
-        </ul>
-        {isLoading && <Loader></Loader>}
-        {PAGE_COUNTER <= pictureTreshhold && images.length >= 12 ? (
-          <button onClick={this.onClickGetMoreImages} className={css.Button}>
-            LOAD MORE
-          </button>
+  // const { images, pictureTreshhold, isLoading, showModal, largeImage } =
+  //   this.state;
+  return (
+    <>
+      <ul
+        onClick={(evt) => {
+          onClickOpenModal(evt);
+        }}
+        className={css.ImageGallery}
+      >
+        {images.length > 0 ? (
+          <ImageGalleryItem key={images.key} images={images}></ImageGalleryItem>
         ) : (
           ""
         )}
-        {showModal ? (
-          <Modal
-            onClickCloseModal={this.onClickCloseModal}
-            largeImage={largeImage}
-            onKeyClose={this.onKeyClose}
-          ></Modal>
-        ) : (
-          ""
-        )}
-      </>
-    );
-  }
+      </ul>
+      {isLoading && <Loader></Loader>}
+      {PAGE_COUNTER <= pictureTreshhold && images.length >= 12 ? (
+        <button onClick={onClickGetMoreImages} className={css.Button}>
+          LOAD MORE
+        </button>
+      ) : (
+        ""
+      )}
+      {showModal ? (
+        <Modal
+          onClickCloseModal={onClickCloseModal}
+          largeImage={largeImage}
+          // onKeyClose={onKeyClose}
+        ></Modal>
+      ) : (
+        ""
+      )}
+    </>
+  );
 }
 
 ImageGallery.propTypes = {
